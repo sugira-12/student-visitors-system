@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <fieldset>
+      <div class="sidebar">
+        <div class="content">
+            <div class="hovers">
+                <div class="animation">
+                    <form id="visitorForm">
+    <input type="text" name="visitorName" placeholder="Visitor Name" required><br>
+    <input type="text" name="studentName" placeholder="Student Name" required><br>
+    <input type="text" name="reason" placeholder="Reason for Visit" required><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("visitorForm");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      const data = {
+        dataSource: "sugira",
+        database: "schoolDB",
+        collection: "visitors",
+        document: {
+          visitorName: formData.get("visitorName"),
+          studentName: formData.get("studentName"),
+          reason: formData.get("reason"),
+          timeIn: new Date().toISOString()
+        }
+      };
+
+      fetch("https://data.mongodb-api.com/app/<your-app-id>/endpoint/data/v1/action/insertOne", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": "<your-api-key>"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(result => {
+        alert("Visitor record saved successfully!");
+        form.reset();
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Something went wrong.");
+      });
+    });
+  </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    </fieldset>
+</body>
+</html>
